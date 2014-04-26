@@ -1,0 +1,10 @@
+[Unit]
+Description=CoreOS iPXE Server
+Documentation=https://coreos.com/docs
+
+[Service]
+Environment='IPXE_BASEURL=192.168.12.177:9000'
+ExecStart=/home/core/bin/ipxeserver
+
+[Install]
+WantedBy=multi-user.target

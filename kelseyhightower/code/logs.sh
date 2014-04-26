@@ -1,0 +1,1 @@
+journalctl -u ipxeserver -f
