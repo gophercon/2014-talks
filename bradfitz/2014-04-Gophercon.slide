@@ -1,0 +1,362 @@
+Camlistore & The Standard Library
+24 Feb 2014
+Tags: camlistore, go, gophercon
+
+Brad Fitzpatrick
+@bradfitz
+brad@danga.com
+http://bradfitz.com/
+
+* There's no I in TEAM
+
+- ... but there's a lot in this talk.
+
+* Talk? Of course!
+
+- Two projects I love:
+- ... Go standard library
+- ... Camlistore
+- Can I make a talk out of them both? Let's see...
+
+* Overview
+
+- How I got into Go
+- Camlistore
+- My (often Camlistore) motivations modifying the standard library
+- Prepare to learn nothing!
+- Story time...
+
+* Pre-Google
+
+* Pre-Google
+
+- Perl, C
+- ... Slow & fun
+- ... or fast & tedious?
+- Accepted the extremes and trade-offs
+
+* Late 2007
+
+* Google language options:
+
+- C++, Java, and Python:
+- ... Fast & often unsafe & tedious
+- ... Verbose & safer & tedious
+- ... Slow & single-threaded & tedious
+- (oh, and Sawzall: weird & kinda neat but often lacking)
+- Javascript: quest for common language?
+- ... C++, Sawzall, SpiderMonkey
+- ... Java, Rhino
+* Late 2008 Techtalk
+
+- Go crew presents Go
+
+Audience: "Does the language have closures?"
+
+Rob: "Yeah, yeah, everybody wants their pet feature."
+
+- But glimmer of hope: not C++, not Java, not Python.
+- (Go gets closures in February anyway)
+
+* 2009
+
+- officially join Android, write even more Java.
+
+- November: Go is open source:
+
+.link http://google-opensource.blogspot.com/2009/11/hey-ho-lets-go.html Hey! Ho! Let's Go!
+
+* 2010
+
+* 2010
+
+- rsync Android source to NFS is high latency per file
+- May 1: rewrite in Go
+- ... gotsync: Go tree sync.
+- ... goroutine forkbomb per file/dir
+
+* May 3, 2010
+
+.html giddy.html
+
+* It kinda works
+
+.html russ-gotsync.html
+
+* Utimes
+
+.html utimes.html
+
+* os.Chtimes
+
+  changeset:   5444:aaa902b78832
+  user:        Russ Cox <rsc@golang.org>
+  date:        Wed May 05 12:49:59 2010 -0700
+  summary:     CONTRIBUTORS: add Brad Fitzpatrick (Google Inc)
+
+(code review)
+
+  changeset:   5490:a79cd7447eaa
+  user:        Brad Fitzpatrick <brad@danga.com>
+  date:        Wed May 19 17:48:53 2010 -0700
+  summary:     os: add Chtimes function
+
+* A trip back in time...
+
+.link http://localhost:3998/shell/earlygo/ Early go
+
+* 2010
+
+- Bus rides
+- Storage system dream
+
+* Too many CMSes, written, maintained, and/or used
+
+- livejournal
+- photo system
+- scanningcabinet: scanned docs
+- my websites
+- other company's services (Google, Twitter, Facebook, etc)
+- file systems on lots of hosts
+- phones
+- fear of {overwriting, losing, duplicating} things
+- Unify all?
+
+* Camlistore
+
+- Content-Addressable
+- Multi-Level
+- Indexed
+- Storage
+
+* Content-addressable
+
+- sync any which way, no conflicts
+- (merge resolution at higher layers)
+- corruption verification/repair
+- de-duping
+
+* Multi-Level
+
+- blob storage
+- indexing
+- search
+- web UI, FUSE, CLI, apps are just clients of search + blob storage.
+
+* Fast forward to 2014: Camlistore today
+
+* Camlistore today
+
+- ~4 years open source
+- "Camlistore is a way to store, sync, share, model and back up content"
+- "personal storage system for life"
+- user in control
+- everything private by default
+- no corporate SPOF
+- aggregate & search everything from everywhere
+
+* Camlistore today
+
+- Local disk, S3, Glacier, Google storage, App Engine, LevelDB, MySQL, Postgres, SQLite, Mongo
+- Cloud or local or mix
+- Replicate (sync or async), shard, encrypt to anything else, itself
+- Command-line, API, Web, and FUSE
+- POSIX filesystem or just objects
+- Huge 5TB files or small objects (tweets, likes, GPS points)
+
+* Camlistore today: import / export
+
+- slurp from web services into Camlistore
+- ... Flickr, LJ, Facebook, G+, Twitter, Foursquare, etc...
+- export to whoever you want, under any API
+
+* Camlistore today: search
+
+- high-level one-liner expression search ("is:image -format:jpeg")
+- low-level structured search (nested tree of operators, fields, set unions/intersections, etc)
+
+* Camlistore is pure Go: (no C)
+
+- HTTP client/server, TLS, AES, ...
+- JSON, XML
+- WebSockets
+- SMTP server
+- Rolling checksums
+- GIF/JPG/PNG enc/dec, resizing, thumbnails
+- FUSE
+- Notification bus
+- database/sql, MySQL, Postgres, Mongo,
+- S3, Glacier,
+- OpenPGP signing & verification
+- ....
+
+* Screenshots
+
+.link /img/cam-mix-types.png Web UI
+.link /img/cam-moscow.png Location search
+.link /img/cam-pano.png Panos
+.link /img/cam-paris-portrait.png Paris + Portrait
+.link /img/cam-other.png Non-images
+.link /img/cam-fuse.png FUSE
+.link /img/cam-android.png Android
+
+* Rewind back to 2010:
+
+* Which language for bus hacking?
+
+- Perl and Python: too slow and single-threaded
+- C++ and Java: too tedious and not fun (slow builds, etc)
+- Go?
+
+* Jun 2010: Camlistore hacking begins...
+
+.link http://localhost:3998/shell/earlycam/ Early Camlistore
+
+* Jun 2010
+
+- MIME multipart reading in Camlistore (needed for Python App Engine file uploads)
+- ... wanted multi-language implementations of clients & servers
+- became the mime/multipart package in July
+
+* July 2010
+
+.image tee.png
+- io.MultiReader, io.MultiWriter
+
+* Sep 2010
+
+- arm: use the correct stat syscalls
+- ... debugging Android performance with Go
+- ... easier than C cross-compiling spells
+
+* Oct 11, 2010
+
+.html to-agl-gpg.html
+
+* Oct 12, 2010
+
+.html from-agl-gpg.html
+
+* 2011
+
+* Jan 2011
+
+- talk with Rob about Camlistore
+
+* Jun 2011
+
+- Camlistore was still running gpg as a child process for some things
+- Redo the os/exec package
+
+.html execdiff.html
+
+* Problems
+
+- Jun 12th: filed my first bug (861: can't do non-chunked responses)
+- start fixing HTTP client & server bugs
+
+* Feb 2011
+
+- http: introduce start of Client and ClientTransport
+
+* March 2011
+
+- http: add packages http/cgi and http/httptest
+- ... for camlistore.org's gitweb CGI browser
+
+* April 2011
+
+- join the Go team full-time
+- os/user: new package to look up users
+- http: reverse proxy handler
+- json: keep track of error offset in SyntaxError
+
+.link http://localhost:3998/shell/cam/ Demo
+
+* May 2011
+
+- png: speed up opaque RGBA encoding
+- jpeg: speed up RGBA encoding ~%50
+- syscall: sendfile
+- io, net, http: sendfile support
+- http: add Request.SetBasicAuth method
+- ... wanted for Camlistore
+
+* July 2011
+
+- adg added "archive/zip: add Writer"
+
+* Sep 2011
+
+- exp/sql{,/driver}: new database packages
+- ... initially prototyped in Camlistore
+
+* Oct 2011
+
+- utf8.Valid, utf8.ValidString
+
+* 2012
+
+* Feb 2012
+
+- net/http: add ServeContent
+
+* March 2012
+
+- cmd/go: allow go get with arbitrary URLs
+
+  $ go get camlistore.org/server/camlistored
+
+- March 28: Go 1 released
+
+* 2013
+
+* Jan 2013
+
+- encoding/json: add Decoder.Buffered accessor to get overread data
+
+* Feb 2013
+
+- net/http: add Next Protocol Negotation upgrade support to the Server
+
+* May 2013
+
+- encoding/json: allocate less in NewEncoder
+
+* Aug 2013
+
+- encoding/json: faster encoding
+- testing: add TB, an interface common to T and B
+
+* Dec 2013
+
+- encoding/json: speed up decoding
+- sync.Pool
+
+* 2014
+
+* Mar 2014
+
+- crypto/tls: make Conn.Read return (n, io.EOF) when EOF is next in buffer
+
+* Go 1.3
+
+* Go 1.3
+
+- sync.Pool: reduce garbage + standing memory usage
+- copying stacks: no random performance fluctations
+- precise GC: important for Camlistore's 32-bit ARM Android build
+
+* Go 1.3
+
+- m[string(byteSlice)] is free
+
+.image img/cam-boot.png
+
+* Go 1.3
+
+- Camlistore's build bots found differences between Go 1.2 & tip; documented.
+
+* Demos
+
+

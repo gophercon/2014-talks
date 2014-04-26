@@ -1,0 +1,11 @@
+Making sure port forwarding to boot2docker works quickly:
+
+ssh -i /Users/bradfitz/.ssh/id_rsa_boot2docker -o StrictHostKeyChecking=no  -o UserKnownHostsFile=/dev/null -p 2022 docker@localhost
+password: 'tcuser'
+
+sudo edit /etc/resolv.conf to remove all DNS (or at least any unreliable/slow DNS)
+
+mkdir .ssh
+chmod 0700 .ssh
+echo ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC24/t+nJpiXoqyrKXEsVhM8gvStUI3U1xn4s1U392dpa3QkOHfSV3LaRSyctAE8aYLKWygfwOio8P8046OrmPPR3DeCiClyLSV+H5YlGAeQnten1N0v64QcTBd3akKaN1TclGSMjH1dHDKypxY2FcpONdMcHiQcoGa0b5Fpebi1admXTExmXdkmBv4BEx8iawzLfCJn58SyZB0Dmj1wEmeooF7l2BtJRClU/ULrm2AO7uyHaOUFHhAfTi6m3w7fhgcJ+SmWoAEusrlf/rJIvR7C61+xc4GvG3XktHEPeJwCBVspw/nYTEtAICDRoXQbHF40m5bHJQndhCjCG6sSktt bradfitz@stuff >> .ssh/authorized_keys
+chmod 0600 .ssh/authorized_keys
