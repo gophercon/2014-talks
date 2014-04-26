@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Adventures in Snarfing and Crunching, starring Heka</title>
+
+    <meta name="description" content="Presentation introducing Mozilla Services' Heka metrics and logging infrastructure.">
+    <meta name="author" content="Rob Miller">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/print.css" type="text/css" media="print">
+
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Used to fade in a background when a specific slide state is reached -->
+      <div class="state-background"></div>
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+
+  <section>
+    <h2>Adventures in</h2>
+    <h1>Snarfing and Crunching!</h1>
+    <h3 class="fragment">Starring:</h3>
+    <h1 class="fragment">Heka</h1>
+    <script>
+      // Delicously hacky. Look away.
+      if( navigator.userAgent.match( /(iPhone|iPad|iPod|Android)/i ) ) document.write( '<p style="color: rgba(0,0,0,0.3); text-shadow: none;">('+'Tap to navigate'+')</p>' );
+    </script>
+  </section>
+
+  <section>
+    <h2>Cloud Services</h2>
+    <img src="mozdino.png" />
+  </section>
+
+  <section>
+    <h2>Cloud Servers</h2>
+    <img src="google-datacenter-tech-13.jpg" />
+  </section>
+
+  <section>
+    <h2>Cloud Data</h2>
+    <img src="firehose.jpg" />
+  </section>
+
+  <section>
+	  <h2>Many Flavors, Many Tools</h2>
+    <ul>
+      <li class="fragment">Log files / (r)syslog(-ng) / Logstash / Splunk / etc.</li>
+      <li class="fragment">Stats / StatsD / Graphite / Ganglia / etc.</li>
+      <li class="fragment">CEP / EEP / Riemann / Esper / ArcSight / etc.</li>
+      <li class="fragment">Monitoring / Nagios / Zenoss / etc.</li>
+      <li class="fragment">App instrumentation / New Relic / etc.</li>
+      <li class="fragment">Server metrics / proc fs / etc.</li>
+      <li class="fragment">etc. / etc. / etc.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>One Basic Pattern</h2>
+    <ul>
+      <li class="fragment">Get data</li>
+      <li class="fragment">Transform and/or transport data</li>
+      <li class="fragment">Deliver data</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>One Basic Pattern: More Detail</h2>
+    <ul>
+      <span class="fragment">
+        <li>Access some stream of bits</li>
+        <li>Identify / split on record boundaries</li>
+        <li>Convert records to common format</li>
+      </span>
+
+      <span class="fragment">
+        <li>Route records to appropriate consumers</li>
+      </span>
+
+      <span class="fragment">
+        <li>Watch data as it streams</li>
+        <li>Generate new messages in common format</li>
+      </span>
+
+      <span class="fragment">
+        <li>Convert from common format to some other format</li>
+        <li>Push bits</li>
+      </span>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Heka to the Rescue!</h2>
+    <img src="overview-diagram.png" />
+  </section>
+
+  <section>
+    <h2>Packs, Runners, and Channels, Oh My!</h2>
+    <ul>
+      <li class="fragment">Protocol buffer Message structs</li>
+      <li class="fragment">Wrapped in PipelinePack envelopes</li>
+      <li class="fragment">Plugins run in their own goroutines</li>
+      <li class="fragment">Packs are passed through the pipeline over channels</li>
+      <li class="fragment">
+        Plugin lifespan and system interaction handled by PluginRunners
+      </li>
+      <li class="fragment">
+        Tight coupling of a plugin to a single goroutine helps keep concurrency sane
+      </li>
+    </section>
+
+    <section>
+      <h2>Routing</h2>
+      <p>
+        After decoding, most packs will be handed to Heka's internal router
+        for delivery to any appropriate filter and/or output plugins.
+      </p>
+      <ul>
+        <li class="fragment">Filters and outputs specify a "message matcher"</li>
+        <li class="fragment">Simple YACC grammar (e.g. "Type == 'MyMessageType'")</li>
+        <li class="fragment">Supports regular expression matching</li>
+        <li class="fragment">Very fast</li>
+        <li class="fragment">Run in their own goroutines, fed via input channels</li>
+    </section>
+
+    <section>
+	  <h2>Sandboxes: Lua</h2>
+    <ul>
+      <p>
+        All Heka plugins can be written in Go, but filters, decoders, and
+        encoders can have their logic in Lua.
+      </li>
+      <li class="fragment">Lua sandboxes limit resource usage and consumption</li>
+      <li class="fragment">Filters support dynamic loading</li>
+      <li class="fragment">Very fast</li>
+      <li class="fragment">Turing complete > complex config DSLs</li>
+      <li class="fragment">Lua Parsing Expression Grammars (LPEG)</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Let's See It!</h2>
+    <img src="demo.jpg" />
+  </section>
+
+  <section>
+    <h2>Why Go?</h2>
+    <p>
+      Once we decided we wanted to write this tool, a number of factors
+      contributed to our choice to use Go:
+    </p>
+    <ul>
+      <li class="fragment">Performance</li>
+      <li class="fragment">Lightweight deployment env</li>
+      <li class="fragment">Concurrency primitives</li>
+      <li class="fragment">Risk management</li>
+    </ul>
+    <p class="fragment">
+      We looked at Rust, but it wasn't (and still isn't) quite ready.
+    </p>
+  </section>
+
+  <section>
+    <h2>What's Been Awesome?</h2>
+    <ul>
+      <li class="fragment">See last slide</li>
+      <li class="fragment">Tooling</li>
+      <li class="fragment">Interfaces</li>
+      <li class="fragment">Back pressure fail conditions</li>
+      <li class="fragment">Platform rapidly improving underneath us</li>
+      <li class="fragment">Static linking</li>
+      <li class="fragment">CGo</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>What's Been !Awesome?</h2>
+    <ul>
+      <li class="fragment">Static linking</li>
+      <li class="fragment">CGo</li>
+      <ul>
+        <li class="fragment">CGo interactions cause a lot of copying</li>
+        <li class="fragment">CFLAGS / LDFLAGS directives require full paths</li>
+        <li class="fragment">No static linking on Windows => test pain</li>
+        <li class="fragment">Linking is finicky on Windows / OSX</li>
+       </ul>
+       <li class="fragment">Test scoping</li>
+       <ul>
+        <li class="fragment">Can't effectively test from outside of package</li>
+        <li class="fragment">Can't export test code from within a package</li>
+      </ul>
+      <li class="fragment">Packaging</li>
+     </ul>
+   </section>
+
+   <section>
+   	<h2>What's Been !Awesome?</h2>
+   	<p class="fragment">
+   		Yes, generics would be nice.
+   	</p>
+   </section>
+
+   <section>
+    <h2>Gotchas</h2>
+    <ul>
+      <li class="fragment">Mind the copies</li>
+      <li class="fragment">Interface > struct</li>
+      <li class="fragment">Package bloat</li>
+      <li class="fragment">No guard rails</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Thanks! Questions?</h2>
+    <ul>
+      <li>Github project: <a href="https://github.com/mozilla-services/heka">https://github.com/mozilla-services/heka</a></li>
+      <li>Documentation: <a href="http://hekad.readthedocs.org">http://hekad.readthedocs.org</a></li>
+      <li>Mailing list: heka@mozilla.org</li>
+      <li>IRC: #heka on irc.mozilla.org</li>
+      <li>This presentation: <a href="https://people.mozilla.com/~rmiller/heka-gophercon-2014-04/">https://people.mozilla.com/~rmiller/heka-gophercon-2014-04/</a></li>
+      <li>rmiller@mozilla.com, <a href="https://twitter.com/n0nsequitarian">@n0nsequitarian</a></li>
+    </ul>
+  </section>
+  </div>
+
+      <!-- The navigational controls UI -->
+      <aside class="controls">
+	<a class="left" href="#">&#x25C4;</a>
+	<a class="right" href="#">&#x25BA;</a>
+	<a class="up" href="#">&#x25B2;</a>
+	<a class="down" href="#">&#x25BC;</a>
+      </aside>
+
+      <!-- Displays presentation progress, max value changes via JS to reflect # of slides -->
+      <div class="progress"><span></span></div>
+
+    </div>
+
+    <!-- Optional libraries for code syntax highlighting and classList support in IE9 -->
+    <script src="lib/js/head.min.js"></script>
+
+    <script>
+      // Load the main reveal.js script
+      head.js( 'js/reveal.js', function() {
+      // Parse the query string into a key/value object
+      var query = {};
+
+      location.search.replace( /[A-Z0-9]+?=(\w*)/gi, function(a) {
+      query[ a.split( '=' ).shift() ] = a.split( '=' ).pop();
+      } );
+
+      // Fires when a slide with data-state=customevent is activated
+      Reveal.addEventListener( 'customevent', function() {
+      console.log( '"customevent" has fired' );
+      } );
+
+      // Fires each time a new slide is activated
+      Reveal.addEventListener( 'slidechanged', function( event ) {
+      // event.previousSlide, event.currentSlide, event.indexh, event.indexv
+      } );
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+
+      theme: query.theme || 'default', // default/neon/beige
+      transition: query.transition || 'default' // default/cube/page/concave/linear(2d)
+      });
+      } );
+
+      // Load third party scripts
+      head.js( 'lib/js/classList.js' );
+      head.js( 'lib/js/highlight.js', function() {
+      // Fire off syntax highlighting for potential code samples in the slides
+      hljs.initHighlightingOnLoad();
+      } );
+
+      // If we're runnning the notes server we need to include some additional JS
+      // TODO Is there a better way to determine if we're running the notes server?
+      if( window.location.host === 'localhost:1947' ) {
+      head.js( 'socket.io/socket.io.js', 'plugin/speakernotes/client.js' );
+      }
+    </script>
+
+  </body>
+</html>
