@@ -222,6 +222,30 @@ func freePort() int {
 
 func main() {
 	flag.Parse()
+	if *dockerFlag == "" {
+		if err := exec.Command("docker", "ps").Run(); err != nil {
+			os.Setenv("DOCKER_HOST", "tcp://localhost:4243")
+			if err := exec.Command("docker", "ps").Run(); err != nil {
+				log.Fatalf("Failed to run docker ps. Forget boot2docker up?")
+			}
+		}
+		*dockerFlag = "docker"
+	}
+	if *tagFlag != "" {
+		startAttachTag(*tagFlag)
+		return
+	}
+	verifyEnvironment()
+	http.HandleFunc("/shell/", handleShell)
+	http.Handle("/img/", http.FileServer(http.Dir(talkDir)))
+	http.HandleFunc("/", handleRoot)
+
+	log.Printf("Presenting to Gophercon 2014 on http://%s", *listenFlag)
+	go exec.Command("open", "http://"+*listenFlag+"/2014-04-Gophercon.slide#1").Start()
+	log.Fatal(http.ListenAndServe(*listenFlag, nil))
+}
+
+func verifyEnvironment() {
 	var err error
 	talkDir, err = os.Getwd()
 	if err != nil {
@@ -234,18 +258,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if *dockerFlag == "" {
-		if err := exec.Command("docker", "ps").Run(); err != nil {
-			os.Setenv("DOCKER_HOST", "tcp://localhost:4243")
-			if err := exec.Command("docker", "ps").Run(); err != nil {
-				log.Fatalf("Failed to run docker ps. Forget boot2docker up?")
-			}
-		}
-	}
-	if *tagFlag != "" {
-		startAttachTag(*tagFlag)
-		return
-	}
 	images, err := exec.Command("docker", "images").Output()
 	if err != nil {
 		log.Fatal(err)
@@ -254,6 +266,18 @@ func main() {
 	testHaveImage(images, "gc14", "earlycam")
 	testHaveImage(images, "gc14", "cam")
 
+	foreachDockerPs(func(image, containerID string) {
+		go func() {
+			log.Printf("Killing existing %s: %s", image, containerID)
+			exec.Command(*dockerFlag, "kill", containerID).Run()
+			exec.Command(*dockerFlag, "rm", containerID).Run()
+		}()
+	})
+
+	if _, err := exec.LookPath("shellinaboxd"); err != nil {
+		log.Fatalf("Can't find shellinaboxd in path")
+	}
+
 	exec.Command("killall", "present").Run()
 	exec.Command("killall", "shellinabox").Run()
 	presentCmd := exec.Command("present", ".")
@@ -261,17 +285,6 @@ func main() {
 	if err := presentCmd.Start(); err != nil {
 		log.Fatalf("Error starting present: %v", err)
 	}
-	defer presentCmd.Process.Kill()
-	if _, err := exec.LookPath("shellinaboxd"); err != nil {
-		log.Fatalf("Can't find shellinaboxd in path")
-	}
-	http.HandleFunc("/shell/", handleShell)
-	http.Handle("/img/", http.FileServer(http.Dir(talkDir)))
-	http.HandleFunc("/", handleRoot)
-
-	log.Printf("Presenting to Gophercon 2014 on http://%s", *listenFlag)
-	go exec.Command("open", "http://"+*listenFlag+"/2014-04-Gophercon.slide#1").Start()
-	log.Fatal(http.ListenAndServe(*listenFlag, nil))
 }
 
 func testHaveImage(images []byte, repo, tag string) {
@@ -282,23 +295,34 @@ func testHaveImage(images []byte, repo, tag string) {
 	}
 }
 
-func startAttachTag(tag string) {
-	if *dockerFlag == "" {
-		*dockerFlag, _ = exec.LookPath("docker")
-	}
+func foreachDockerPs(fn func(image, containerID string)) {
 	outb, err := exec.Command(*dockerFlag, "ps", "--no-trunc").CombinedOutput()
 	if err != nil {
 		log.Fatalf("docker ps: %v: %s", err, outb)
 	}
 	sc := bufio.NewScanner(bytes.NewReader(outb))
-	img := "gc14:" + tag
-	var containers []string
 	for sc.Scan() {
-		if strings.Contains(sc.Text(), img) {
-			fields := strings.Fields(sc.Text())
-			containers = append(containers, fields[0])
+		t := sc.Text()
+		if !strings.Contains(t, "gc14:") {
+			continue
 		}
+		f := strings.Fields(t)
+		fn(f[1], f[0])
 	}
+}
+
+func startAttachTag(tag string) {
+	if *dockerFlag == "" {
+		*dockerFlag, _ = exec.LookPath("docker")
+	}
+	var containers []string
+	img := "gc14:" + tag
+	foreachDockerPs(func(runningImage, containerID string) {
+		if runningImage != img {
+			return
+		}
+		containers = append(containers, containerID)
+	})
 	switch {
 	case len(containers) > 1:
 		for _, container := range containers {
