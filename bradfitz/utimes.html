@@ -1,0 +1,13 @@
+<blockquote style="font-style: italic; font-size: 150%; line-height: 125%;">
+
+<p><b>Me:</b> "how to portably use syscall.Utimes for the Timeval size
+      differences on amd64 vs 386?  Can't figure out how to do a cast
+      that depends on the Timeval.Sec size type"<p>
+
+<p><b>Russ:</b> "Basically nothing in syscall can be used portably. There
+      should be a wrapper in package os but no one has written it
+      yet. "
+</p>
+</blockquote>
+
+
