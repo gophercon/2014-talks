@@ -1,0 +1,118 @@
+Go for Sysadmins
+GopherCon 2014
+11:45 24 Apr 2014
+Tags: go
+
+Kelsey Hightower
+New Relic
+kelsey.hightower@gmail.com
+@kelseyhightower
+
+* Go for Sysadmins
+
+- Toolsmithing
+- Deploying Go applications
+
+* Ansible Challenge
+
+It might be nice for us to have a module for packer.io, which uses various CM tools to build images.  It's pretty new.
+
+I'm not a Go developer, though I figured someone might like to do this, and there were probably go developers on the list.
+
+Michael DeHaan 
+
+* Reward
+
+It's small compensation, but if anyone gets one accepted, we'll send you a shirt and some stickers and build a statue of you in our formal gardens*
+
+Michael DeHaan
+
+* Reward
+
+Note, we don't have any formal gardens yet.   But when we do!  Yes, we'll do it in bronze, and maybe with you riding a horse.
+
+Michael DeHaan
+
+* Gopher on a Horse
+
+.image images/gopheronahorse.jpg
+
+* Start Small
+
+* Start Small
+
+Go
+
+.code code/think.go
+
+* Start Small
+
+Go
+
+.play code/user.go
+
+* Solving Real Problems
+
+* CoreOS iPXE Server
+
+- Dynamically generate iPXE boot scripts
+- Serve static content
+- Running on our own server
+
+* CoreOS iPXE Server
+
+.code ipxeserver/main.go /START 0 OMIT/,/END 0 OMIT/
+
+* CoreOS iPXE Server
+
+.code ipxeserver/main.go /START 1 OMIT/,/END 1 OMIT/
+
+* CoreOS iPXE Server
+
+.code ipxeserver/main.go /START 2 OMIT/,/END 2 OMIT/
+
+* Hidden Concurrency 
+
+.code code/http_server.go
+
+* CoreOS iPXE Server
+
+.play ipxeserver/main.go /START 2 OMIT/,/END 2 OMIT/
+
+* Static Binary
+
+* Cross Compiling
+
+Compile the Go runtime and standard library.
+
+.code code/crosscompile.sh /START TOOLCHAIN OMIT/,/END TOOLCHAIN OMIT/
+
+Cross compile binaries.
+
+.code code/crosscompile.sh /START BUILD OMIT/,/END BUILD OMIT/
+
+* Deployment
+
+* Deployment
+
+Copy the binary and systemd unit
+
+.code code/deploy.sh
+
+systemd unit:
+
+.code ipxeserver/ipxeserver.service
+
+* Deployment
+
+Start the service
+
+.code code/start.sh
+
+Tail the logs
+
+.code code/logs.sh
+
+* It's Go Time
+
+.image images/tatoo.jpg
