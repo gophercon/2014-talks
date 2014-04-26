@@ -1,0 +1,178 @@
+Bluetooth Low Energy and Embedded Go
+
+Josh Bleecher Snyder
+PayPal / card.io
+https://github.com/paypal/gatt
+https://github.com/gophercon/2014-talks/offbymany
+https://github.com/paypal/ionet
+josharian@gmail.com
+@offbymany
+
+
+* PayPal Beacon
+
+.image beacon.png
+
+
+* Bluetooth Low Energy
+
+
+* Overview
+
+- Low energy: Button battery
+- Simple
+- Low cost, ubiquitous
+- Low bandwidth
+- Asymmetric (peripherals and centrals)
+- Enables always on
+- Useful for presence, ad hoc communication, sensors, watches, internet of things, ...
+- Learn more: Bluetooth Low Energy by Robin Heydon
+
+
+* GATT
+
+Generic Attribute Profile
+
+- Peripheral: Advertises services
+- Service: Set of characteristics
+- Characteristic: Value, can read/write/notify, small
+
+
+* BlueZ GATT package
+
+Available now, API not yet stable
+
+	go get github.com/paypal/gatt
+
+Package gatt supports writing a peripheral.
+Central support is coming. For now, use your phone.
+
+
+* Create a server and a service
+
+.code samples/gatt_server.go /srv/,//
+
+.code samples/gatt_server.go /AddService/,/\)\)/
+
+
+* Add characteristics
+
+#.code samples/gatt_server.go /rchar/,/\s}\)$/
+
+.code samples/gatt_server.go /wchar/,/\s}\)$/
+
+.code samples/gatt_server.go /nchar/,/\s}\)$/
+
+
+* Advertise and serve
+
+.code samples/gatt_server.go /srv.AdvertiseAndServe/,/\)/
+
+
+* Custom BLE network stack
+
+
+* Follow the stdlib
+
+- BLE link layer has connections
+- Write characteristic ⇒ Read from central
+- Notify characteristic ⇒ Write to central
+
+	type Conn interface {
+	    Read(b []byte) (n int, err error)
+	    Write(b []byte) (n int, err error)
+	    Close() error
+	    LocalAddr() Addr
+	    RemoteAddr() Addr
+	    SetDeadline(t time.Time) error
+	    SetReadDeadline(t time.Time) error
+	    SetWriteDeadline(t time.Time) error
+	}
+
+	type Listener interface {
+	    Accept() (c Conn, err error)
+	    Close() error
+	    Addr() Addr
+	}
+
+# Discuss: Power of interfaces and channels
+
+
+* We can serve HTTP over BLE
+
+Demo code available...
+
+but serving HTTP at the link layer isn't wise anyway.
+
+
+* We do serve HTTP over BLE
+
+Standard
+
+	· Application layer: HTTP server
+	 «net.Listener»
+	· TCP/IP stack
+
+Beacon
+
+	· Application layer: HTTP server
+	 «net.Listener»
+	· Application layer: protobuf messages
+	 «net.Listener»
+	· Custom transport layer: multiplexing, reliability
+	 «net.Listener»
+	· BLE/GATT server
+
+Not pictured: Security. It's complicated.
+
+# Two application layers: efficiency vs flexibility
+
+
+* Embedded Go
+
+# Discuss universal design
+
+
+* Division of labor
+
+As much as possible in Go without sacrificing portability.
+
+*No*raw*syscalls.*No*cgo.*
+
+Go:
+
+- robustness, concurrency, coordination, complexity
+
+Gofers:
+
+- kernel modules, simple C shims, platform-provided executables
+
+Communicate with standard IPC: files, sockets, serial devices. Insulate with interfaces.
+
+Benefits:
+
+- cross-compilation, testability, modularity, privilege separation, decoupled from hardware churn, sanity (structs of unions of structs, oh my)
+
+
+* GC
+
+Not a big deal:
+
+- User experience is dominated by BLE latency
+- Write efficient code, don't leak
+- Profile, profile, profile
+- Number of allocs as much as size of allocs
+
+
+* Crash only
+
+	"Crash-only programs crash safely and recover quickly.
+	There is only one way to stop such software—by crashing
+	it—and only one way to bring it up—by initiating recovery."
+
+- Required...
+- ...but also awesome.
+
+- Simpler code
+- Robust system
+- Not that hard
