@@ -29,3 +29,5 @@ Talks
   by Josh Bleecher Snyder
 * [Heka](https://cdn.rawgit.com/gophercon/2014-talks/master/rob_miller_heka/index.html)
   by Rob Miller
+* [Writing a High Performance Database in Go](https://cdn.rawgit.com/gophercon/2014-talks/master/ben_johnson-writing_a_high_performance_database_in_go.pdf)
+  by Ben Johnson
