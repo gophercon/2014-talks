@@ -31,3 +31,6 @@ Talks
   by Rob Miller
 * [Writing a High Performance Database in Go](https://cdn.rawgit.com/gophercon/2014-talks/master/ben_johnson-writing_a_high_performance_database_in_go.pdf)
   by Ben Johnson
+* [High Performance Systems in Go](https://cdn.rawgit.com/gophercon/2014-talks/master/derekcollison/HighPerformanceSystemsInGo.pdf)
+  by Derek Collison
+
