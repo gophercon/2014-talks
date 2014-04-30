@@ -33,6 +33,11 @@ Talks
   by Ben Johnson
 * [High Performance Systems in Go](https://cdn.rawgit.com/gophercon/2014-talks/master/derekcollison/HighPerformanceSystemsInGo.pdf)
   by Derek Collison
+* [Go For Gophers](http://talks.golang.org/2014/go4gophers.slide#1)
+  by Andrew Gerrand
+* [Hello Gophers](http://talks.golang.org/2014/hellogophers.slide#1)
+  by Rob Pike
+
 
 Lightning Talks
 ===============
