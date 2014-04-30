@@ -37,7 +37,8 @@ Talks
   by Andrew Gerrand
 * [Hello Gophers](http://talks.golang.org/2014/hellogophers.slide#1)
   by Rob Pike
-
+* [Go, From C to Go](http://talks.golang.org/2014/c2go.slide#1)
+  by Russ Cox
 
 Lightning Talks
 ===============
