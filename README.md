@@ -34,3 +34,14 @@ Talks
 * [High Performance Systems in Go](https://cdn.rawgit.com/gophercon/2014-talks/master/derekcollison/HighPerformanceSystemsInGo.pdf)
   by Derek Collison
 
+Lightning Talks
+===============
+
+* [InfluxDB - a distributed time series, metrics, and events database](https://cdn.rawgit.com/gophercon/2014-talks/master/lightningtalks/paul-dix-influxdb.pdf)
+  by Paul Dix
+* [Deck - a Go package for presentations](https://cdn.rawgit.com/gophercon/2014-talks/master/lightningtalks/anthony-starks-deck.pdf)
+  by Anthony Starks
+* [Mutant Go compilers](https://cdn.rawgit.com/gophercon/2014-talks/master/lightningtalks/elliott-stoneham-mutant-go-compilers.pdf)
+  by Elliott Stoneham
+* [Learning by Contributing](https://cdn.rawgit.com/gophercon/2014-talks/master/lightningtalks/nathan-youngman-contributing.pdf)
+  by Nathan Youngman
