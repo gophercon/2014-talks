@@ -20,7 +20,7 @@ Talks
 * [Best Practices for Production Environments](https://cdn.rawgit.com/gophercon/2014-talks/master/best-practices-for-production-environments.pdf)
   by Peter Bourgon
 * [Camlistore & The Standard Library](http://talks.godoc.org/github.com/gophercon/2014-talks/bradfitz/2014-04-Gophercon.slide)
-  by Brad Fitz
+  by Brad Fitzpatrick
 * [Go for Sysadmins](http://talks.godoc.org/github.com/gophercon/2014-talks/kelseyhightower/go_for_sysadmins.slide)
   by Kelsey Hightower
 * [Spray Some NSQ on it](https://cdn.rawgit.com/gophercon/2014-talks/master/matt_reiferson-spray_some_nsq_on_it-2014-04-24.pdf)
