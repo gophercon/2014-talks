@@ -39,6 +39,8 @@ Talks
   by Rob Pike
 * [Go, From C to Go](http://talks.golang.org/2014/c2go.slide#1)
   by Russ Cox
+* [Building web services in Go](http://rcrowley.org/talks/gophercon-2014.html)
+  by Richard Crowley
 
 Lightning Talks
 ===============
