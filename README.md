@@ -41,6 +41,10 @@ Talks
   by Russ Cox
 * [Building web services in Go](http://rcrowley.org/talks/gophercon-2014.html)
   by Richard Crowley
+* [The Go Circuit](https://cdn.rawgit.com/gophercon/2014-talks/master/petar-maymounkov-go-circuit.pdf)
+  by Petar Maymounkov
+* [Writing and Debugging a Web-Based Multi-Player Game](https://cdn.rawgit.com/gophercon/2014-talks/master/Fraser-Graham-Killer-Robots.pdf)
+  by Stephen McQuay and Fraser Graham
 
 Lightning Talks
 ===============
