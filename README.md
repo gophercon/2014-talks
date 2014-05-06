@@ -9,42 +9,42 @@ If you create a pull request - don't forget to update this file.
 Talks
 =====
 
+* [Hello Gophers](http://talks.golang.org/2014/hellogophers.slide#1)
+  by Rob Pike
+* [High Performance Systems in Go](https://cdn.rawgit.com/gophercon/2014-talks/master/derekcollison/HighPerformanceSystemsInGo.pdf)
+  by Derek Collison
+* [The Go Circuit](https://cdn.rawgit.com/gophercon/2014-talks/master/petar-maymounkov-go-circuit.pdf)
+  by Petar Maymounkov
 * [A Channel Compendium](https://cdn.rawgit.com/gophercon/2014-talks/master/John_Graham-Cumming_A_Channel_Compendium.pdf)
   by John Graham
-* [Making Docker GO](https://cdn.rawgit.com/gophercon/2014-talks/master/Making_Docker_GO_victor_vieux_gophercon2014.pdf)
-  by Victor Vieux
-* [Building a Relevancy Engine using mongoDB](https://cdn.rawgit.com/gophercon/2014-talks/master/William_Kennedy-Building-Relevancy-Engine-MongoDB-Go.pdf)
-  by William Kennedy
-* [database/sql](https://cdn.rawgit.com/gophercon/2014-talks/master/baron-schwartz/database-sql.pdf)
-  by Baron Schwartz
-* [Best Practices for Production Environments](https://cdn.rawgit.com/gophercon/2014-talks/master/best-practices-for-production-environments.pdf)
-  by Peter Bourgon
-* [Camlistore & The Standard Library](http://talks.godoc.org/github.com/gophercon/2014-talks/bradfitz/2014-04-Gophercon.slide)
-  by Brad Fitzpatrick
-* [Go for Sysadmins](http://talks.godoc.org/github.com/gophercon/2014-talks/kelseyhightower/go_for_sysadmins.slide)
-  by Kelsey Hightower
-* [Spray Some NSQ on it](https://cdn.rawgit.com/gophercon/2014-talks/master/matt_reiferson-spray_some_nsq_on_it-2014-04-24.pdf)
-  by Matt Reiferson
 * [Bluetooth Low Energy and Embedded Go](http://talks.godoc.org/github.com/gophercon/2014-talks/offbymany/ble_embedded.slide)
   by Josh Bleecher Snyder
+* [Go for Sysadmins](http://talks.godoc.org/github.com/gophercon/2014-talks/kelseyhightower/go_for_sysadmins.slide)
+  by Kelsey Hightower
 * [Heka](https://cdn.rawgit.com/gophercon/2014-talks/master/rob_miller_heka/index.html)
   by Rob Miller
 * [Writing a High Performance Database in Go](https://cdn.rawgit.com/gophercon/2014-talks/master/ben_johnson-writing_a_high_performance_database_in_go.pdf)
   by Ben Johnson
-* [High Performance Systems in Go](https://cdn.rawgit.com/gophercon/2014-talks/master/derekcollison/HighPerformanceSystemsInGo.pdf)
-  by Derek Collison
-* [Go For Gophers](http://talks.golang.org/2014/go4gophers.slide#1)
-  by Andrew Gerrand
-* [Hello Gophers](http://talks.golang.org/2014/hellogophers.slide#1)
-  by Rob Pike
+* [Spray Some NSQ on it](https://cdn.rawgit.com/gophercon/2014-talks/master/matt_reiferson-spray_some_nsq_on_it-2014-04-24.pdf)
+  by Matt Reiferson
+* [Camlistore & The Standard Library](http://talks.godoc.org/github.com/gophercon/2014-talks/bradfitz/2014-04-Gophercon.slide)
+  by Brad Fitzpatrick
 * [Go, From C to Go](http://talks.golang.org/2014/c2go.slide#1)
   by Russ Cox
-* [Building web services in Go](http://rcrowley.org/talks/gophercon-2014.html)
-  by Richard Crowley
-* [The Go Circuit](https://cdn.rawgit.com/gophercon/2014-talks/master/petar-maymounkov-go-circuit.pdf)
-  by Petar Maymounkov
+* [Best Practices for Production Environments](https://cdn.rawgit.com/gophercon/2014-talks/master/best-practices-for-production-environments.pdf)
+  by Peter Bourgon
+* [Building a Relevancy Engine using mongoDB](https://cdn.rawgit.com/gophercon/2014-talks/master/William_Kennedy-Building-Relevancy-Engine-MongoDB-Go.pdf)
+  by William Kennedy
+* [Making Docker GO](https://cdn.rawgit.com/gophercon/2014-talks/master/Making_Docker_GO_victor_vieux_gophercon2014.pdf)
+  by Victor Vieux
 * [Writing and Debugging a Web-Based Multi-Player Game](https://cdn.rawgit.com/gophercon/2014-talks/master/Fraser-Graham-Killer-Robots.pdf)
   by Stephen McQuay and Fraser Graham
+* [database/sql](https://cdn.rawgit.com/gophercon/2014-talks/master/baron-schwartz/database-sql.pdf)
+  by Baron Schwartz
+* [Building web services in Go](http://rcrowley.org/talks/gophercon-2014.html)
+  by Richard Crowley
+* [Go For Gophers](http://talks.golang.org/2014/go4gophers.slide#1)
+  by Andrew Gerrand
 
 Lightning Talks
 ===============
