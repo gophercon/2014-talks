@@ -5,6 +5,10 @@ This is the official repository for slides and talks from GopherCon 2014.
 
 If you create a pull request - don't forget to update this file.
 
+Videos
+=====
+[Confreaks GopherCon Video](http://confreaks.com/events/gophercon2014)
+Videos are appearing slowly here.  When they're all done, we'll add the links next to the slides below.
 
 Talks
 =====
